@@ -1,0 +1,39 @@
+name: JEV one-request commit smoke
+
+# A request-file commit on the trusted default branch is the opt-in signal.
+# Never trigger on arbitrary source edits or untrusted PRs.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jev-requests/current.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jev-commit-smoke-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  synthetic-live:
+    # Do not rerun the same request using the GitHub UI: every model call has cost.
+    if: ${{ github.repository == 'delirious-yan/jev-bridge' && github.ref == 'refs/heads/main' && github.event_name == 'push' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Validate explicit synthetic request
+        run: node scripts/validate-jev-request.mjs
+      - name: Run all offline regression tests
+        run: npm test
+      - name: Send exactly one synthetic read-only TypeSafe request
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          JEV_ALLOW_LIVE: YES_LIVE_CALL
+        run: npm run smoke
