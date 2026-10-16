@@ -1,0 +1,6 @@
+# Requires a branch protection setting ("Require review from Code Owners")
+# before approval becomes mandatory.
+* @delirious-yan
+/.github/ @delirious-yan
+/src/ @delirious-yan
+/scripts/ @delirious-yan
