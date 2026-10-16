@@ -17,6 +17,6 @@ Once this repository is public, anyone can view, clone or fork it and propose ch
 
 ## License
 
-The owner has **not yet selected an open-source license**. Public GitHub visibility allows viewing and forking on GitHub but does not automatically grant blanket reuse/redistribution rights. Choose and publish an appropriate license before inviting broad reuse.
+This project is distributed under the [MIT License](LICENSE). You may reuse, modify, and redistribute this bridge subject to that license. The license does **not** provide free TypeSafe/JEV service access or the owner's API credentials.
 
 Using this adapter with TypeSafe requires each user to obtain their own account and credentials and comply with TypeSafe's terms.
