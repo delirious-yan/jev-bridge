@@ -44,6 +44,21 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 
 **Neither workflow has been dispatched.** The private account's included GitHub-hosted minutes were exhausted earlier in October 2026 (per owner policy), so do not run hosted Actions unless capacity/cost is separately confirmed. Never redirect this job to the owner's Windows runner.
 
+## Optional commit trigger (proposed, not yet active)
+
+For a separate owner-authorized smoke invocation, the proposed
+`.github/workflows/jev-commit-request.yml` can run when
+`jev-requests/current.json` is committed to trusted `main` — **not**
+on every code commit. The fixed synthetic request is validated before
+offline tests and a single potentially billable TypeSafe call.
+The initial request file is deliberately **not committed**, so adopting
+the workflow alone does not trigger a live API call.
+
+See [commit-trigger setup and cost gates](docs/commit-trigger.md). On this
+private repository, a push trigger does not restore exhausted hosted
+Actions minutes or run on an owner's Windows computer. No API call or
+GitHub runner is activated by merely creating a PR for this workflow.
+
 ## Integration plan
 
 Use this standalone adapter in a separately authorized, reviewed consuming project. Keep `theey-base` production unchanged. Persist architecture decisions in the private `mind-self` repository, not sensitive state in the bridge.
