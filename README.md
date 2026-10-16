@@ -44,6 +44,19 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 
 **Neither workflow has been dispatched.** The private account's included GitHub-hosted minutes were exhausted earlier in October 2026 (per owner policy), so do not run hosted Actions unless capacity/cost is separately confirmed. Never redirect this job to the owner's Windows runner.
 
+## Contributions and license
+
+JEV Bridge is MIT-licensed; see [LICENSE](LICENSE). The bridge source may be
+reused independently, but this repository does not supply TypeSafe API credits
+or anyone else's secret credentials.
+
+To propose a change, fork the repository and open a pull request. See
+[CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+The maintainer retains merge control; no third-party fork PR may access
+TypeSafe secrets or run live model traffic. Review the
+[public-release readiness gates](docs/PUBLIC-RELEASE-CHECKLIST.md)
+before making the repository publicly visible.
+
 ## Integration plan
 
 Use this standalone adapter in a separately authorized, reviewed consuming project. Keep `theey-base` production unchanged. Persist architecture decisions in the private `mind-self` repository, not sensitive state in the bridge.
