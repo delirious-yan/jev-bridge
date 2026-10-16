@@ -42,7 +42,9 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 - `offline-tests`: unit tests, **no API secret** or model call.
 - `live-synthetic`: tests then **one** synthetic, read-only TypeSafe request using GitHub's `TYPESAFE_API_KEY` repository secret; requires explicit owner authorization and may incur JEV cost.
 
-**Neither workflow has been dispatched.** The private account's included GitHub-hosted minutes were exhausted earlier in October 2026 (per owner policy), so do not run hosted Actions unless capacity/cost is separately confirmed. Never redirect this job to the owner's Windows runner.
+`.github/workflows/offline-pr-tests.yml` automatically runs `npm test` for pull requests targeting `main`, using GitHub-hosted Ubuntu and Node.js 22. It has read-only repository permissions, pinned actions, no persisted checkout credential, no secrets, no deployment, and no live JEV calls. External fork runs require maintainer approval under the repository's Actions policy.
+
+The manual workflow has not been dispatched. Live checks require separate authorization for credentials, cost and execution. Never redirect any job to the owner's workstation.
 
 ## Contributions and license
 
