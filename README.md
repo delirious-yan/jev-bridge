@@ -44,9 +44,9 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 
 **Neither workflow has been dispatched.** The private account's included GitHub-hosted minutes were exhausted earlier in October 2026 (per owner policy), so do not run hosted Actions unless capacity/cost is separately confirmed. Never redirect this job to the owner's Windows runner.
 
-## Optional commit trigger (proposed, not yet active)
+## Optional commit trigger (requires a committed request)
 
-For a separate owner-authorized smoke invocation, the proposed
+For a separate owner-authorized smoke invocation, the
 `.github/workflows/jev-commit-request.yml` can run when
 `jev-requests/current.json` is committed to trusted `main` — **not**
 on every code commit. The fixed synthetic request is validated before
