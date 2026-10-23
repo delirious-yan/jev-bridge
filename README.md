@@ -44,11 +44,15 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 
 `.github/workflows/offline-pr-tests.yml` automatically runs `npm test` for pull requests targeting `main`, using GitHub-hosted Ubuntu and Node.js 22. It has read-only repository permissions, pinned actions, no persisted checkout credential, no secrets, no deployment, and no live JEV calls. External fork runs require maintainer approval under the repository's Actions policy.
 
-The manual workflow has not been dispatched. Live checks require separate authorization for credentials, cost and execution. Never redirect any job to the owner's workstation.
+The one-call `jev-manual-check.yml` workflow remains separate from the completed benchmark; any new live check requires fresh authorization for credentials, cost and execution. Never redirect any job to the owner's workstation.
 
-## Synthetic decision benchmark (not yet run live)
+## Synthetic decision benchmark (first live batch complete)
 
-The separate manual-only `.github/workflows/jev-benchmark.yml` prepares a five-case, three-trial synthetic decision benchmark (15 evaluations maximum). It is **not** run on PRs or pushes. Use `node scripts/benchmark.mjs --dry-run` locally without a secret or model call; see [benchmark safety and review instructions](docs/JEV-BENCHMARK.md). Live use requires a separate owner decision about TypeSafe cost, review/merge into protected `main`, and explicit manual dispatch. No upstream benchmark results are claimed yet.
+The manual-only `.github/workflows/jev-benchmark.yml` runs five public synthetic decision cases, each with three rotating answer orders (15 evaluations maximum). It **never** runs on PRs, pushes or schedules. Locally use `node scripts/benchmark.mjs --dry-run` without secrets or TypeSafe calls; see [benchmark safety and evidence](docs/JEV-BENCHMARK.md).
+
+On 2026-10-24 PHT, the owner manually dispatched [GitHub Actions run 40004120477](https://github.com/delirious-yan/jev-bridge/actions/runs/40004120477), first attempt on commit `eb1c20a`, using requested and returned model `jev-1.14.0`. **15/15 choices matched the precommitted synthetic rubric**, with **zero critical failures** and **zero overconfident wrong answers**. This is a limited proof of live advisory API interoperability on those five cases, **not** a general production-safety or independently sampled model accuracy claim. It consumed up to 15 TypeSafe calls; actual account charges are not established.
+
+**GitHub Actions runtime hygiene:** Workflows now use full-SHA pins for `actions/checkout` **v7.0.1** and `actions/setup-node` **v7.1.0**, whose own action runtimes are **Node 24**, avoiding the prior "Node.js 20 is deprecated" warning from the old pinned versions. The project's actual test process remains **Node 22**. See `AGENTS.md` for the permanent action-version review policy. Historical warning lines remain in prior workflow logs; updated pinned actions have not yet been exercised in a new runner job, so absence of future warnings is not yet directly tested.
 
 ## Contributions and license
 
