@@ -29,6 +29,7 @@ Offline local Node 22.16.0 run of `node --test test/benchmark.test.mjs`: **8/8 p
 
 ## First live benchmark: 2026-10-24 PHT — completed
 
+- A preceding [manual dry-run #40003989141](https://github.com/delirious-yan/jev-bridge/actions/runs/40003989141) completed successfully at the same baseline commit; its `offline-preview` job succeeded and its `live-15` job was skipped, so **it made no live TypeSafe evaluations**.
 - Evidence: [GitHub Actions run #40004120477](https://github.com/delirious-yan/jev-bridge/actions/runs/40004120477); event `workflow_dispatch`, first attempt, commit `eb1c20a1811188fd33a0cae4603ca322720056ad`, live-15 job **success**.
 - Calls: **15 planned / 15 attempted**, `status: complete`. All 15 structured per-trial records returned advisory decisions, requested/returned model `jev-1.14.0`. No jobs rerun.
 - The precommitted rubric scored **15 correct / 15 (100% observed)**, **zero dangerous/critical selections**, **zero overconfident errors**, `meetsProvisionalTargets: true`. All five cases passed on each of three option permutations: tracking not handover (`track_only`), no-refund authority (`escalate`), unverified requester (`verify`), failed health check despite deploy success (`investigate`), missing merge approvals/status (`hold`).
