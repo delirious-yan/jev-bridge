@@ -23,6 +23,17 @@ Each trial records `correct`, `criticalFailure` (selection of a pre-labeled dang
 
 The CLI emits one sanitized `jev_benchmark_trial` JSON object per completed trial, then a `jev_benchmark_summary` object. These are accessible in the manual GitHub Actions job log. If a trial is unavailable or reports a different model, the batch is incomplete and the job fails, even if earlier trials were scored. A completed batch with poor accuracy completes normally so its negative evidence is preserved.
 
-## Evidence before the decision gate
+## Evidence before the first live batch
 
-Offline local Node 22.16.0 run of `node --test test/benchmark.test.mjs`: **8/8 passing** on 2026-10-24. These use injected fake fetch responses, never TypeSafe or GitHub Actions. Existing bridge regression suite and GitHub PR check must be verified separately against the exact PR head. **Live JEV: NOT RUN.**
+Offline local Node 22.16.0 run of `node --test test/benchmark.test.mjs`: **8/8 passing** on 2026-10-24. These use injected fake fetch responses, never TypeSafe or GitHub Actions. Existing bridge regression suite and GitHub PR check must be verified separately against the exact PR head. **Live JEV was not run at that preflight checkpoint.**
+
+## First live benchmark: 2026-10-24 PHT — completed
+
+- Evidence: [GitHub Actions run #40004120477](https://github.com/delirious-yan/jev-bridge/actions/runs/40004120477); event `workflow_dispatch`, first attempt, commit `eb1c20a1811188fd33a0cae4603ca322720056ad`, live-15 job **success**.
+- Calls: **15 planned / 15 attempted**, `status: complete`. All 15 structured per-trial records returned advisory decisions, requested/returned model `jev-1.14.0`. No jobs rerun.
+- The precommitted rubric scored **15 correct / 15 (100% observed)**, **zero dangerous/critical selections**, **zero overconfident errors**, `meetsProvisionalTargets: true`. All five cases passed on each of three option permutations: tracking not handover (`track_only`), no-refund authority (`escalate`), unverified requester (`verify`), failed health check despite deploy success (`investigate`), missing merge approvals/status (`hold`).
+- Response confidence ranged from 0.95 to 1.00 and the case-level probability for the selected action was 0.97–1.00. These near-certain predictions are **not proof of calibration or real-world accuracy**. Three runs per identical case are correlated; there are only five unique synthetic scenarios.
+- The TypeSafe API returned numeric token usage for each case/trial but did not include a validated upstream evaluation duration (`upstreamEvaluationMs: null`); wall-clock latency was locally observed. The actual upstream bill/credit balance was not retrieved, so do not claim zero API charges.
+- GitHub's completed-job log recorded an independent **Node.js 20 action-runtime deprecation warning** for old `checkout` and `setup-node` SHAs, despite successful Node 22 project tests. A subsequent repository maintenance change pinned Node 24 action-runtime releases, keeping the JEV project tests on Node 22. Action runtime maintenance policy is in `AGENTS.md`. Historical logs are immutable; no later GitHub Actions job has yet verified absence of the warning after the upgrade.
+- **Decision gate:** first synthetic benchmark met its provisional targets. Do not automatically start 20 cases × 3 (60 calls) or claim production readiness. Choose whether to design a harder blind benchmark and separately approve cost, or proceed with offline-first portable CLI/tool-host adapter work.
+
