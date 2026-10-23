@@ -46,6 +46,10 @@ Without `allowNetwork: true`, no network request runs. Without a key, even opted
 
 The manual workflow has not been dispatched. Live checks require separate authorization for credentials, cost and execution. Never redirect any job to the owner's workstation.
 
+## Synthetic decision benchmark (not yet run live)
+
+The separate manual-only `.github/workflows/jev-benchmark.yml` prepares a five-case, three-trial synthetic decision benchmark (15 evaluations maximum). It is **not** run on PRs or pushes. Use `node scripts/benchmark.mjs --dry-run` locally without a secret or model call; see [benchmark safety and review instructions](docs/JEV-BENCHMARK.md). Live use requires a separate owner decision about TypeSafe cost, review/merge into protected `main`, and explicit manual dispatch. No upstream benchmark results are claimed yet.
+
 ## Contributions and license
 
 JEV Bridge is MIT-licensed; see [LICENSE](LICENSE). The bridge source may be
