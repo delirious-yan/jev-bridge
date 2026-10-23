@@ -1,0 +1,75 @@
+name: JEV synthetic benchmark (manual only)
+
+# Never triggered by push, PR, schedules or dispatch from another workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'No-cost offline plan, or up to 15 potentially billable TypeSafe API calls'
+        type: choice
+        required: true
+        default: dry-run
+        options:
+          - dry-run
+          - live-15
+      max_calls:
+        description: 'For live-15 enter exactly 15 (otherwise enter 0)'
+        type: choice
+        required: true
+        default: '0'
+        options:
+          - '0'
+          - '15'
+      authorization:
+        description: 'For live-15 type I_APPROVE_15_SYNTHETIC_JEV_CALLS after separate cost approval'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jev-benchmark-manual
+  cancel-in-progress: false
+
+jobs:
+  offline-preview:
+    if: inputs.mode == 'dry-run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: node scripts/benchmark.mjs --dry-run
+
+  live-15:
+    # Only a reviewed main-branch, first-attempt owner dispatch may see the secret.
+    if: >-
+      inputs.mode == 'live-15' &&
+      inputs.max_calls == '15' &&
+      inputs.authorization == 'I_APPROVE_15_SYNTHETIC_JEV_CALLS' &&
+      github.ref == 'refs/heads/main' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Run offline regressions before potential JEV cost
+        run: npm test
+      - name: Run capped synthetic evaluation (no automatic retry)
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          JEV_BENCHMARK_AUTH: ${{ inputs.authorization }}
+          JEV_BENCHMARK_MAX_CALLS: ${{ inputs.max_calls }}
+        run: node scripts/benchmark.mjs --live
