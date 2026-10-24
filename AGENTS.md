@@ -17,3 +17,9 @@ This is an independent TypeSafe/Jev integration. `mind-self` stores the owner's 
 - **Separate action runtime from tested Node version:** `runs.using: node24` is the runtime of checkout/setup-node actions, whereas `setup-node`'s `node-version: '22'` is deliberately the version executing JEV tests. Never bump the JEV test/runtime version just to remove action deprecation warnings.
 - **Validate without spend or live traffic:** Confirm all workflow files use supported action SHAs with no Node 20 runtime; do local/offline tests before any later authorized run. Do not dispatch paid/live workflows or create automatic push triggers for warning verification. New action/runtime deprecations can occur in the future; upgrade pinned actions promptly rather than suppress warnings.
 - Routine owner-approved development can go directly to `main` under the verified administrator bypass and separate no-bypass main integrity ruleset; external/security-sensitive contributions remain reviewable. Keep GitHub's anti-force-push and anti-deletion protections.
+
+## Private MCP integration security policy (2026-10-24)
+
+- The prototype in `src/private-mcp.mjs` is NOT a deployed, connected or authenticated plugin. Never claim live ChatGPT MCP support from source code alone.
+- Production setup requires OAuth token verification on every request, explicit authorization for transmitted data and an atomic durable quota reservation for each potentially billable call; deny when any mechanism is missing. Keep JEV fully advisory and do not attach write/execution tools.
+- The model cannot grant itself paid-call approval. Hosting, secret storage, OAuth registration and cost caps remain separate decision gates. No live JEV traffic, plugin publication or hosting deployment without separate owner approval.
