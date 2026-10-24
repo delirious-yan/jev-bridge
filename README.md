@@ -71,6 +71,10 @@ before making the repository publicly visible.
 
 `src/tool-host.mjs` provides a portable `jev_evaluate_choice` tool declaration and one-call-capped handler for future approved connector hosts. It is **not deployed or registered as a ChatGPT plugin**; live requests stay disabled by default, and the model cannot supply authorization or credentials. Eight new targeted tests use mocked HTTP with no TypeSafe calls. See [tool-host interface, permission boundary and next gate](docs/JEV-TOOL-HOST.md).
 
+## Private MCP integration candidate
+
+A **source-only** MCP 2025-11-25 Streamable HTTP interface is implemented in `src/mcp-http.mjs` and bound to the JEV tool through `src/mcp-host.mjs`. Authentication and paid call approval **deny by default**. It is not hosted, installed in ChatGPT, or wired to an OAuth issuer or an atomic spending ledger. See [security and deployment decision gate](docs/JEV-MCP-INTEGRATION.md).
+
 ## Integration plan
 
 Use this standalone adapter in a separately authorized, reviewed consuming project. Keep `theey-base` production unchanged. Persist architecture decisions in the private `mind-self` repository, not sensitive state in the bridge.
